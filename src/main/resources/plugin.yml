@@ -1,0 +1,13 @@
+name: TieredChat
+main: com.github.scilldev.TieredChat
+version: @version@
+
+authors: [Scill]
+description: Multi-tiered chat system.
+api-version: 1.18
+softdepend: [PlaceholderAPI]
+
+commands:
+  tieredchat:
+    description: Main command for chat.
+    aliases: [chat, c]

@@ -1,0 +1,13 @@
+# Supports any placeholders from PlaceholderAPI
+chat-format: '[%channel%] %player_name%: %message%'
+
+# remember to do MySQL
+
+
+messages:
+  invalid-permission: '&cYou do not have permission to perform this command.'
+  invalid-sender: '&cYou must be a player to perform this command.'
+  reloaded: '&aTieredChat has been reloaded!'
+  chat-usage:
+    - 'Chat commands:'
+    - '/chat [channel] - switches the channel'

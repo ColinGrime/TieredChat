@@ -1,0 +1,20 @@
+default-channel: GLOBAL
+
+channels:
+  GLOBAL:
+    commands: ['global']
+    display-type: GLOBAL
+  LOCAL:
+    commands: ['local']
+    permission: channels.local
+    display-type: LOCAL
+    block-radius: 30
+  SHOUT:
+    commands: ['shout', 'yell']
+    permission: channels.shout
+    display-type: LOCAL
+  WHISPER:
+    commands: ['whisper']
+    permission: channels.whisper
+    display-type: LOCAL
+    block-radius: 5
