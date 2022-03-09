@@ -1,13 +1,29 @@
 # Supports any placeholders from PlaceholderAPI
-chat-format: '[%channel%] %player_name%: %message%'
+chat-format: '&d[%channel%] &c%player_name%&7: &f%message%'
 
 # remember to do MySQL
 
 
 messages:
-  invalid-permission: '&cYou do not have permission to perform this command.'
-  invalid-sender: '&cYou must be a player to perform this command.'
-  reloaded: '&aTieredChat has been reloaded!'
-  chat-usage:
-    - 'Chat commands:'
-    - '/chat [channel] - switches the channel'
+  # Success messages:
+  success:
+    chat-swap: '&7You have switched your chat to &a%channel%&7!'
+    filter-add: '&a%word% &7has been added to the filter!'
+    filter-remove: '&a%word% &7 has been removed from the filter!'
+    filter-list: '&7Words: &a%words%'
+  # Usage messages (for commands):
+  usage:
+    chat-command:
+      - 'Chat commands:'
+      - '/chat [channel] - switches the channel'
+    filter-command: '&c/filter'
+    filter-add: '&c/filter add [word]'
+    filter-remove: '&c/filter remove [word]'
+    filter-list: '&c/filter list'
+  # Error messages:
+  invalid:
+    permission: '&cYou do not have permission to perform this command.'
+    sender: '&cYou must be a player to perform this command.'
+  # Admin messages:
+  admin:
+    reloaded: '&aTieredChat has been reloaded!'
