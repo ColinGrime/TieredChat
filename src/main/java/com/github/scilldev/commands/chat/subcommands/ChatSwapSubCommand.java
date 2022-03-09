@@ -1,11 +1,14 @@
 package com.github.scilldev.commands.chat.subcommands;
 
 import com.github.scilldev.TieredChat;
+import com.github.scilldev.chat.channel.ChatChannel;
 import com.github.scilldev.commands.SubCommand;
 import com.github.scilldev.data.Messages;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChatSwapSubCommand implements SubCommand {
 
@@ -16,18 +19,15 @@ public class ChatSwapSubCommand implements SubCommand {
 	}
 
 	@Override
-	public void onCommand(CommandSender sender, String[] args) {
-
-	}
-
-	@Override
-	public ArrayList<String> onTabComplete(CommandSender sender, String[] args) {
-		return SubCommand.super.onTabComplete(sender, args);
+	public void onCommand(CommandSender sender, String subCommand, String[] args) {
+		ChatChannel channel = plugin.getChatManager().getChannelByName(subCommand);
+		plugin.getChatManager().getUser((Player) sender).setChannelPreference(channel);
+		// TODO success message
 	}
 
 	@Override
 	public String getName() {
-		return "change";
+		return null;
 	}
 
 	@Override
@@ -42,12 +42,11 @@ public class ChatSwapSubCommand implements SubCommand {
 
 	@Override
 	public String[] getAliases() {
-//		List<String> channelNames = new ArrayList<>();
-//		for (ChatChannelAbstraction channel : main.getChatManager().getChannels()) {
-//			channel.get
-//		}
-//
-//		return new String[]{"change", }
-		return null;
+		List<String> channelNames = new ArrayList<>();
+		for (ChatChannel channel : plugin.getChatManager().getChannels()) {
+			channelNames.add(channel.getName().toLowerCase());
+		}
+
+		return channelNames.toArray(new String[1]);
 	}
 }
