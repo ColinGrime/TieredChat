@@ -5,9 +5,11 @@ version: @version@
 authors: [Scill]
 description: Multi-tiered chat system.
 api-version: 1.18
-softdepend: [PlaceholderAPI]
+depend: [PlaceholderAPI]
 
 commands:
   tieredchat:
     description: Main command for chat.
     aliases: [chat, c]
+  filter:
+    description: Allows players to filter out profane text.
