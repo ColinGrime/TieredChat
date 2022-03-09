@@ -4,6 +4,10 @@ import com.github.scilldev.chat.manager.ChatManager;
 import com.github.scilldev.chat.manager.ChatManagerAbstraction;
 import com.github.scilldev.commands.chat.ChatBaseCommand;
 import com.github.scilldev.commands.chat.subcommands.ChatSwapSubCommand;
+import com.github.scilldev.commands.filter.FilterBaseCommand;
+import com.github.scilldev.commands.filter.subcommands.FilterAddSubCommand;
+import com.github.scilldev.commands.filter.subcommands.FilterListSubCommand;
+import com.github.scilldev.commands.filter.subcommands.FilterRemoveSubCommand;
 import com.github.scilldev.data.ChannelDataFile;
 import com.github.scilldev.data.Messages;
 import com.github.scilldev.data.Settings;
@@ -40,6 +44,11 @@ public final class TieredChat extends JavaPlugin {
 		ChatBaseCommand chatCommand = new ChatBaseCommand(this);
 		chatCommand.registerSubCommand(new ChatSwapSubCommand(this));
 
+		FilterBaseCommand filterCommand = new FilterBaseCommand(this);
+		filterCommand.registerSubCommand(new FilterAddSubCommand(this));
+		filterCommand.registerSubCommand(new FilterRemoveSubCommand(this));
+		filterCommand.registerSubCommand(new FilterListSubCommand(this));
+
 		// register listeners
 		new PlayerListeners(this);
 		new ChannelListener(this);
@@ -65,10 +74,6 @@ public final class TieredChat extends JavaPlugin {
 
 	public Settings getSettings() {
 		return settings;
-	}
-
-	public ChannelDataFile getChannelData() {
-		return channelData;
 	}
 
 	public ChatManager getChatManager() {
