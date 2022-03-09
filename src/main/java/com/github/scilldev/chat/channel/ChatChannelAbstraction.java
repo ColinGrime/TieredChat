@@ -26,11 +26,15 @@ public class ChatChannelAbstraction implements ChatChannel {
 
 	public ChatChannelAbstraction(TieredChat main, String name, List<String> commands, String permission, DisplayType displayType, double blockRadius) {
 		this.main = main;
-		this.name = name;
-		this.commands = commands;
-		this.permission = permission;
-		this.displayType = displayType;
-		this.blockRadius = blockRadius;
+		this.name = returnNonNull(name, "InvalidName");
+		this.commands = returnNonNull(commands, new ArrayList<>());
+		this.permission = returnNonNull(permission, "");
+		this.displayType = returnNonNull(displayType, DisplayType.GLOBAL);
+		this.blockRadius = blockRadius <= 0 ? -1 : blockRadius;
+	}
+
+	private <T> T returnNonNull(T valueToCheck, T nonNull) {
+		return valueToCheck == null ? nonNull : valueToCheck;
 	}
 
 	@Override
