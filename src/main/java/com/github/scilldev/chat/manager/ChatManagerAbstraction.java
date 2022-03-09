@@ -28,6 +28,17 @@ public class ChatManagerAbstraction implements ChatManager {
 	}
 
 	@Override
+	public ChatChannel getChannelByName(String channelName) {
+		for (ChatChannel channel : getChannels()) {
+			if (channel.getName().equalsIgnoreCase(channelName)) {
+				return channel;
+			}
+		}
+
+		return null;
+	}
+
+	@Override
 	public ChatChannel getDefaultChannel() {
 		return defaultChannel;
 	}
@@ -35,6 +46,11 @@ public class ChatManagerAbstraction implements ChatManager {
 	@Override
 	public void setDefaultChannel(ChatChannel defaultChannel) {
 		this.defaultChannel = defaultChannel;
+	}
+
+	@Override
+	public void loadUsers(Map<UUID, ChatUser> chatUsers) {
+		this.chatUsers = chatUsers;
 	}
 
 	@Override

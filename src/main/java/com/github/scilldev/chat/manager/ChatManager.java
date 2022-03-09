@@ -29,6 +29,12 @@ public interface ChatManager {
 	List<ChatChannel> getChannels();
 
 	/**
+	 * @param channelName name of a channel
+	 * @return ChatChannel object corresponding with the name
+	 */
+	ChatChannel getChannelByName(String channelName);
+
+	/**
 	 * @return default channel loaded in {@link ChannelDataFile#reload()}
 	 */
 	ChatChannel getDefaultChannel();
@@ -37,6 +43,12 @@ public interface ChatManager {
 	 * @param defaultChannel default channel
 	 */
 	void setDefaultChannel(ChatChannel defaultChannel);
+
+	/**
+	 * TODO Loads the channels when *MySQL database method* is called.
+	 * @param chatUsers newly loaded chat users
+	 */
+	void loadUsers(Map<UUID, ChatUser> chatUsers);
 
 	/**
 	 * @return map of player UUID's and their ChatUser object
