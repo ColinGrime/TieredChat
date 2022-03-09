@@ -12,8 +12,7 @@ public class FilterBaseCommand extends BaseCommand {
 
 	@Override
 	public Messages getUsage() {
-		// TODO usage
-		return null;
+		return Messages.USAGE_FILTER_COMMAND;
 	}
 
 	@Override

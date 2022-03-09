@@ -21,8 +21,13 @@ public class ChatSwapSubCommand implements SubCommand {
 	@Override
 	public void onCommand(CommandSender sender, String subCommand, String[] args) {
 		ChatChannel channel = plugin.getChatManager().getChannelByName(subCommand);
-		plugin.getChatManager().getUser((Player) sender).setChannelPreference(channel);
-		// TODO success message
+
+		if (sender.hasPermission(channel.getPermission())) {
+			plugin.getChatManager().getUser((Player) sender).setChannelPreference(channel);
+			Messages.SUCCESS_CHAT_SWAP.sendTo(sender);
+		}
+
+		getUsage().sendTo(sender);
 	}
 
 	@Override
@@ -32,7 +37,7 @@ public class ChatSwapSubCommand implements SubCommand {
 
 	@Override
 	public Messages getUsage() {
-		return null;
+		return Messages.USAGE_CHAT_COMMAND;
 	}
 
 	@Override

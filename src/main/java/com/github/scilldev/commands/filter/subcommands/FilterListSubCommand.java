@@ -3,10 +3,12 @@ package com.github.scilldev.commands.filter.subcommands;
 import com.github.scilldev.TieredChat;
 import com.github.scilldev.commands.SubCommand;
 import com.github.scilldev.data.Messages;
+import com.github.scilldev.utils.Replacer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FilterListSubCommand implements SubCommand {
 
@@ -18,10 +20,10 @@ public class FilterListSubCommand implements SubCommand {
 
 	@Override
 	public void onCommand(CommandSender sender, String subCommand, String[] args) {
-		Player player = (Player) sender;
-		List<String> filter = plugin.getChatManager().getUser(player).getFilteredMessages();
+		List<String> filter = plugin.getChatManager().getUser((Player) sender).getFilteredMessages();
+		String filterMessage = String.join(", ", filter);
 
-		// TODO filter message in config
+		Messages.SUCCESS_FILTER_LIST.sendTo(sender, new Replacer("%words%", filterMessage));
 	}
 
 	@Override
@@ -31,8 +33,7 @@ public class FilterListSubCommand implements SubCommand {
 
 	@Override
 	public Messages getUsage() {
-		// TODO usage
-		return null;
+		return Messages.USAGE_FILTER_LIST;
 	}
 
 	@Override
