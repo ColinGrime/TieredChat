@@ -25,8 +25,8 @@ public class PlayerListeners implements Listener {
 	public void onPlayerChatEvent(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		ChatChannel channel = plugin.getChatManager().getUser(player).getChannelPreference();
-		callChannelEvent(channel, player, event.getMessage(), channel.getAllowedListeners(player));
 
+		callChannelEvent(channel, player, event.getMessage());
 		event.setCancelled(true);
 	}
 
@@ -35,15 +35,19 @@ public class PlayerListeners implements Listener {
 		String commandName = event.getMessage().substring(1).split(" ")[0];
 		ChatChannel channel = plugin.getChatManager().getChannelByName(commandName);
 
-		if (channel != null) {
-			String message = event.getMessage().substring(commandName.length() + 1);
-			Player player = event.getPlayer();
-			callChannelEvent(channel, player, message, channel.getAllowedListeners(player));
+		if (channel != null && event.getPlayer().hasPermission(channel.getPermission())) {
+			String message = event.getMessage().substring(commandName.length() + 2);
+
+			callChannelEvent(channel, event.getPlayer(), message);
+			event.setCancelled(true);
 		}
 	}
 
-	private void callChannelEvent(ChatChannel channel, Player player, String message, Set<Player> recipients) {
-		ChannelChatEvent channelEvent = new ChannelChatEvent(channel, player, message, recipients);
-		Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(channelEvent));
+	private void callChannelEvent(ChatChannel channel, Player player, String message) {
+		Bukkit.getScheduler().runTask(plugin, () -> {
+			Set<Player> recipients = channel.getAllowedListeners(player);
+			ChannelChatEvent channelEvent = new ChannelChatEvent(channel, player, message, recipients);
+			Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(channelEvent));
+		});
 	}
 }
