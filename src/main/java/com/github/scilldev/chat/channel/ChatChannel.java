@@ -1,6 +1,5 @@
 package com.github.scilldev.chat.channel;
 
-import com.github.scilldev.chat.ChatUser;
 import com.github.scilldev.chat.channel.enums.DisplayType;
 import com.github.scilldev.chat.manager.ChatManager;
 import org.bukkit.entity.Player;
@@ -42,16 +41,16 @@ public interface ChatChannel {
 	 * Gets the online players who have this channel
 	 * selected as held in {@link ChatManager#getUser(Player)}.
 	 *
-	 * @return users that have this channel selected
+	 * @return players that have this channel selected
 	 */
-	Set<ChatUser> getCurrentListeners();
+	Set<Player> getCurrentListeners();
 
 	/**
 	 * Gets the players who are allowed to listen
-	 * to {@code chatUser} when they speak.
+	 * to {@code player} when they speak.
 	 *
-	 * @param chatUser messenger
-	 * @return allowed users
+	 * @param player messenger
+	 * @return allowed players
 	 */
-	Set<ChatUser> getAllowedListeners(ChatUser chatUser);
+	Set<Player> getAllowedListeners(Player player);
 }

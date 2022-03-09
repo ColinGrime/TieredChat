@@ -59,13 +59,13 @@ public class ChatChannelAbstraction implements ChatChannel {
 	}
 
 	@Override
-	public Set<ChatUser> getCurrentListeners() {
-		Set<ChatUser> listeners = new HashSet<>();
+	public Set<Player> getCurrentListeners() {
+		Set<Player> listeners = new HashSet<>();
 
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			ChatUser user = main.getChatManager().getUser(player);
 			if (user.getChannelPreference() == this) {
-				listeners.add(user);
+				listeners.add(player);
 			}
 		}
 
@@ -73,17 +73,19 @@ public class ChatChannelAbstraction implements ChatChannel {
 	}
 
 	@Override
-	public Set<ChatUser> getAllowedListeners(ChatUser chatUser) {
+	public Set<Player> getAllowedListeners(Player player) {
+		Set<Player> listeners = getCurrentListeners();
+		listeners.remove(player);
+
 		if (displayType == DisplayType.GLOBAL) {
-			return new HashSet<>();
+			return listeners;
 		}
 
-		Player player = chatUser.getPlayer();
 		if (blockRadius == -1) {
-			return getCurrentListeners().stream().filter(u -> u.getPlayer().getWorld() == player.getWorld()).collect(Collectors.toSet());
+			return listeners.stream().filter(l -> l.getWorld() == player.getWorld()).collect(Collectors.toSet());
 		}
 
 		List<Entity> nearby = player.getNearbyEntities(blockRadius, blockRadius, blockRadius);
-		return getCurrentListeners().stream().filter(u -> nearby.contains(u.getPlayer())).collect(Collectors.toSet());
+		return listeners.stream().filter(nearby::contains).collect(Collectors.toSet());
 	}
 }
