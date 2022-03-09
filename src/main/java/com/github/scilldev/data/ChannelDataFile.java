@@ -47,29 +47,29 @@ public class ChannelDataFile implements DataFile {
 			return;
 		}
 
+		plugin.getChatManager().loadChannels(getChannels(channelSec));
+	}
+
+	private List<ChatChannel> getChannels(ConfigurationSection channelSec) {
 		List<ChatChannel> channels = new ArrayList<>();
 		for (String channelName : channelSec.getKeys(false)) {
+			// options: commands, permission, display-type, block-radius
 			List<String> commands = channelSec.getStringList(channelName + ".commands");
 			String permission = channelSec.getString(channelName + ".permission");
 			DisplayType display = DisplayType.getByName(channelSec.getString(channelName + ".display-type"));
+			int blockRadius = channelSec.getInt(channelName + ".block-radius");
 
-			int blockRadius;
-			if (display == DisplayType.GLOBAL || !channelSec.contains("block-radius")) {
-				blockRadius = -1;
-			} else {
-				blockRadius = channelSec.getInt("block-radius");
-			}
-
+			// creates and adds the channel
 			ChatChannel channel = new ChatChannelAbstraction(plugin, channelName, commands, permission, display, blockRadius);
 			channels.add(channel);
 
+			// set it as default if configured to it
 			if (channelName.equalsIgnoreCase(config.getString("default-channel"))) {
 				plugin.getChatManager().setDefaultChannel(channel);
 			}
 		}
-		// todo maybe split this up a bit into diff methods ^^
 
-		plugin.getChatManager().loadChannels(channels);
+		return channels;
 	}
 
 	public void save() {
