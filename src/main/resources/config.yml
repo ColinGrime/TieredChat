@@ -1,9 +1,15 @@
+# Save your player data:
+mysql:
+  host: 'localhost'
+  port: 3306
+  database: 'minecraft'
+  username: 'username'
+  password: ''
+
 # Supports any placeholders from PlaceholderAPI
 chat-format: '&d[%channel%] &c%player_name%&7: &f%message%'
 
-# remember to do MySQL
-
-
+# Certain messages have placeholders (%channel%, %word%, %words%)
 messages:
   # Success messages:
   success:
