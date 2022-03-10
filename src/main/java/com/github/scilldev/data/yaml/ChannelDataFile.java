@@ -1,9 +1,10 @@
-package com.github.scilldev.data;
+package com.github.scilldev.data.yaml;
 
 import com.github.scilldev.TieredChat;
 import com.github.scilldev.chat.channel.ChatChannel;
 import com.github.scilldev.chat.channel.ChatChannelAbstraction;
-import com.github.scilldev.chat.channel.enums.DisplayType;
+import com.github.scilldev.chat.channel.DisplayType;
+import com.github.scilldev.data.DataFile;
 import com.github.scilldev.utils.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

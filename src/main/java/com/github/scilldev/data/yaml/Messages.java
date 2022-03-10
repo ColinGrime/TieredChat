@@ -1,4 +1,4 @@
-package com.github.scilldev.data;
+package com.github.scilldev.data.yaml;
 
 import com.github.scilldev.TieredChat;
 import com.github.scilldev.utils.Logger;

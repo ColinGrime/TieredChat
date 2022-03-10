@@ -33,6 +33,10 @@ public class ChatUser {
 		return channelPreference;
 	}
 
+	public void setChannelPreference(ChatChannel channelPreference) {
+		this.channelPreference = channelPreference;
+	}
+
 	public List<String> getFilteredMessages() {
 		return filteredMessages;
 	}

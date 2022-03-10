@@ -2,7 +2,7 @@ package com.github.scilldev.chat.manager;
 
 import com.github.scilldev.chat.ChatUser;
 import com.github.scilldev.chat.channel.ChatChannel;
-import com.github.scilldev.data.ChannelDataFile;
+import com.github.scilldev.data.yaml.ChannelDataFile;
 import org.bukkit.entity.Player;
 
 import java.util.List;

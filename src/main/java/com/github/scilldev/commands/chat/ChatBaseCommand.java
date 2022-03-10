@@ -3,7 +3,7 @@ package com.github.scilldev.commands.chat;
 import com.github.scilldev.TieredChat;
 import com.github.scilldev.chat.channel.ChatChannel;
 import com.github.scilldev.commands.BaseCommand;
-import com.github.scilldev.data.Messages;
+import com.github.scilldev.data.yaml.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 

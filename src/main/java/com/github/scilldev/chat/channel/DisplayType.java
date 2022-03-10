@@ -1,4 +1,4 @@
-package com.github.scilldev.chat.channel.enums;
+package com.github.scilldev.chat.channel;
 
 import com.github.scilldev.utils.Logger;
 

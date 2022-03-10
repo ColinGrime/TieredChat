@@ -1,8 +1,6 @@
 package com.github.scilldev.chat.channel;
 
 import com.github.scilldev.TieredChat;
-import com.github.scilldev.chat.ChatUser;
-import com.github.scilldev.chat.channel.enums.DisplayType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -67,8 +65,8 @@ public class ChatChannelAbstraction implements ChatChannel {
 		Set<Player> listeners = new HashSet<>();
 
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			ChatUser user = main.getChatManager().getUser(player);
-			if (user.getChannelPreference() == this) {
+			// TODO add ability to mute channels
+			if (player.hasPermission(permission)) {
 				listeners.add(player);
 			}
 		}

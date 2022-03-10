@@ -1,6 +1,5 @@
 package com.github.scilldev.chat.channel;
 
-import com.github.scilldev.chat.channel.enums.DisplayType;
 import com.github.scilldev.chat.manager.ChatManager;
 import org.bukkit.entity.Player;
 

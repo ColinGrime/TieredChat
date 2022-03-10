@@ -2,13 +2,12 @@ package com.github.scilldev.commands.filter.subcommands;
 
 import com.github.scilldev.TieredChat;
 import com.github.scilldev.commands.SubCommand;
-import com.github.scilldev.data.Messages;
+import com.github.scilldev.data.yaml.Messages;
 import com.github.scilldev.utils.Replacer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FilterListSubCommand implements SubCommand {
 
