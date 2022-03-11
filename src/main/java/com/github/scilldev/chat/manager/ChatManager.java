@@ -2,7 +2,7 @@ package com.github.scilldev.chat.manager;
 
 import com.github.scilldev.chat.ChatUser;
 import com.github.scilldev.chat.channel.ChatChannel;
-import com.github.scilldev.data.yaml.ChannelDataFile;
+import com.github.scilldev.data.yaml.ChannelData;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface ChatManager {
 
 	/**
-	 * Loads the channels when {@link ChannelDataFile#reload()} is called.
+	 * Loads the channels when {@link ChannelData#reload()} is called.
 	 * @param channels newly loaded channels
 	 */
 	void loadChannels(List<ChatChannel> channels);
@@ -35,7 +35,7 @@ public interface ChatManager {
 	ChatChannel getChannelByName(String channelName);
 
 	/**
-	 * @return default channel loaded in {@link ChannelDataFile#reload()}
+	 * @return default channel loaded in {@link ChannelData#reload()}
 	 */
 	ChatChannel getDefaultChannel();
 

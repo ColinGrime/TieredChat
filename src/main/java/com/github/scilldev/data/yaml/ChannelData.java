@@ -15,13 +15,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChannelDataFile implements DataFile {
+public class ChannelData implements DataFile {
 
 	private final TieredChat plugin;
 	private final File file;
 	private FileConfiguration config;
 
-	public ChannelDataFile(TieredChat plugin) {
+	public ChannelData(TieredChat plugin) {
 		this.plugin = plugin;
 		this.file = new File(plugin.getDataFolder(), "channels.yml");
 		init();
