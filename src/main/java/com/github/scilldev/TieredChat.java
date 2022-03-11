@@ -8,7 +8,10 @@ import com.github.scilldev.commands.filter.FilterBaseCommand;
 import com.github.scilldev.commands.filter.subcommands.FilterAddSubCommand;
 import com.github.scilldev.commands.filter.subcommands.FilterListSubCommand;
 import com.github.scilldev.commands.filter.subcommands.FilterRemoveSubCommand;
-import com.github.scilldev.data.yaml.ChannelDataFile;
+import com.github.scilldev.data.DataSourceProvider;
+import com.github.scilldev.data.mysql.Database;
+import com.github.scilldev.data.mysql.user.UserData;
+import com.github.scilldev.data.yaml.ChannelData;
 import com.github.scilldev.data.yaml.Messages;
 import com.github.scilldev.data.yaml.Settings;
 import com.github.scilldev.listeners.ChannelListener;
@@ -19,26 +22,39 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class TieredChat extends JavaPlugin {
 
-	// data classes
-	private Settings settings;
-	private ChannelDataFile channelData;
-
+	// manager classes
 	private ChatManager chatManager;
+
+	// yaml data classes
+	private Settings settings;
+	private ChannelData channelData;
+
+	// sql data classes
+	private DataSourceProvider dataSourceProvider;
+	private UserData userData;
 
 	@Override
 	public void onEnable() {
 		if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-			Logger.severe("PlaceholderAPI was not found. Plugin has been disabled.");
-			getServer().getPluginManager().disablePlugin(this);
+			disablePlugin("PlaceholderAPI was not found. Plugin has been disabled.");
 			return;
 		}
 
-		// load managers
+		// load managers and yaml data
 		chatManager = new ChatManagerAbstraction();
-
-		// create and reload config files
 		loadData();
-		reload();
+
+		// initialize data provider and test connection
+		dataSourceProvider = new DataSourceProvider(settings);
+		if (!dataSourceProvider.testConection()) {
+			disablePlugin("Could not establish database connection. Plugin has been disabled.");
+			return;
+		}
+
+		// load more sql stuff
+		Database database = new Database(dataSourceProvider.getSource());
+		database.init();
+		database.startTimers();
 
 		// register commands/subcommands
 		ChatBaseCommand chatCommand = new ChatBaseCommand(this);
@@ -56,13 +72,15 @@ public final class TieredChat extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		dataSourceProvider.close();
 		// TODO save files / SQL
 	}
 
 	private void loadData() {
 		saveDefaultConfig();
 		settings = new Settings(this);
-		channelData = new ChannelDataFile(this);
+		channelData = new ChannelData(this);
+		reload();
 	}
 
 	public void reload() {
@@ -78,5 +96,10 @@ public final class TieredChat extends JavaPlugin {
 
 	public ChatManager getChatManager() {
 		return chatManager;
+	}
+
+	private void disablePlugin(String message) {
+		Logger.severe(message);
+		getServer().getPluginManager().disablePlugin(this);
 	}
 }

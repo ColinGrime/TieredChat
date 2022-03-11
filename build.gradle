@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 java {
@@ -30,8 +31,17 @@ dependencies {
     // PlaceholderAPI
     implementation 'me.clip:placeholderapi:2.11.1'
 
-    // MySQL
+    // SQL stuff
     implementation 'mysql:mysql-connector-java:8.0.28'
+    implementation 'com.zaxxer:HikariCP:4.0.3'
+}
+
+shadowJar {
+    dependencies {
+        // Shades the SQL dependencies
+        include dependency('mysql:mysql-connector-java:8.0.28')
+        include dependency('com.zaxxer:HikariCP:4.0.3')
+    }
 }
 
 // Allows @version@ placeholder in plugin.yml
