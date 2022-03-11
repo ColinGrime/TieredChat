@@ -7,6 +7,5 @@ CREATE TABLE IF NOT EXISTS tieredchat_users (
 CREATE TABLE IF NOT EXISTS tieredchat_filter (
     uuid CHAR(36) NOT NULL,
     message VARCHAR(100),
-    PRIMARY KEY (uuid),
-    FOREIGN KEY (uuid) REFERENCES chat_users(uuid)
+    FOREIGN KEY (uuid) REFERENCES tieredchat_users(uuid)
 );

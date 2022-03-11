@@ -10,29 +10,27 @@ import java.sql.SQLException;
 
 public class DataSourceProvider {
 
-	private final DataSource source;
+	private final HikariDataSource source;
 
 	public DataSourceProvider(Settings settings) {
-		this.source = init(settings);
+		this.source = new HikariDataSource();
+		init(settings);
 	}
 
-	private HikariDataSource init(Settings settings) {
-		HikariConfig config = new HikariConfig();
-		config.setJdbcUrl("jdbc:mysql://"
+	private void init(Settings settings) {
+		source.setJdbcUrl("jdbc:mysql://"
 				+ settings.getMysqlHost() + ":"
 				+ settings.getMysqlPort() + "/"
 				+ settings.getMysqlDatabase());
-		config.setUsername(settings.getMysqlUsername());
-		config.setPassword(settings.getMysqlPassword());
-		config.setMaximumPoolSize(10);
-
-		return new HikariDataSource(config);
+		source.setUsername(settings.getMysqlUsername());
+		source.setPassword(settings.getMysqlPassword());
+		source.setMaximumPoolSize(10);
 	}
 
 	public boolean testConection() {
 		try (Connection conn = source.getConnection()) {
 			return conn.isValid(5);
-		} catch (SQLException throwables) {
+		} catch (SQLException e) {
 			return false;
 		}
 	}
@@ -42,6 +40,6 @@ public class DataSourceProvider {
 	}
 
 	public void close() {
-		((HikariDataSource) source).close();
+		source.close();
 	}
 }

@@ -10,10 +10,13 @@ import com.github.scilldev.commands.filter.subcommands.FilterListSubCommand;
 import com.github.scilldev.commands.filter.subcommands.FilterRemoveSubCommand;
 import com.github.scilldev.data.DataSourceProvider;
 import com.github.scilldev.data.mysql.Database;
+import com.github.scilldev.data.mysql.DatabaseAbstraction;
 import com.github.scilldev.data.mysql.user.UserData;
+import com.github.scilldev.data.mysql.user.UserDataAbstraction;
 import com.github.scilldev.data.yaml.ChannelData;
 import com.github.scilldev.data.yaml.Messages;
 import com.github.scilldev.data.yaml.Settings;
+import com.github.scilldev.hooks.PlaceholderAPIHook;
 import com.github.scilldev.listeners.ChannelListener;
 import com.github.scilldev.listeners.PlayerListeners;
 import com.github.scilldev.utils.Logger;
@@ -32,14 +35,12 @@ public final class TieredChat extends JavaPlugin {
 	// sql data classes
 	private DataSourceProvider dataSourceProvider;
 	private UserData userData;
+	private Database database;
+
+	private boolean isPlaceholdersEnabled = false;
 
 	@Override
 	public void onEnable() {
-		if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-			disablePlugin("PlaceholderAPI was not found. Plugin has been disabled.");
-			return;
-		}
-
 		// load managers and yaml data
 		chatManager = new ChatManagerAbstraction();
 		loadData();
@@ -47,33 +48,41 @@ public final class TieredChat extends JavaPlugin {
 		// initialize data provider and test connection
 		dataSourceProvider = new DataSourceProvider(settings);
 		if (!dataSourceProvider.testConection()) {
-			disablePlugin("Could not establish database connection. Plugin has been disabled.");
+			Logger.severe("Could not establish database connection. Plugin has been disabled.");
+			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
 
-		// load more sql stuff
-		Database database = new Database(dataSourceProvider.getSource());
-		database.init();
+		// user data
+		userData = new UserDataAbstraction(this);
+
+		// set up the database (build needed tables / perform updates)
+		Logger.log("Setting up database...");
+		timeAction(() -> database = new DatabaseAbstraction(this), "Database set up in %s ms");
+
+		// start database save timers (for user chat data)
+		Logger.log("Loading in user data...");
+		timeAction(() -> userData.loadUsers(), "Users loaded in %s ms");
 		database.startTimers();
 
-		// register commands/subcommands
-		ChatBaseCommand chatCommand = new ChatBaseCommand(this);
-		chatCommand.registerSubCommand(new ChatSwapSubCommand(this));
+		// register commands and listeners
+		registerCommands();
+		registerListeners();
 
-		FilterBaseCommand filterCommand = new FilterBaseCommand(this);
-		filterCommand.registerSubCommand(new FilterAddSubCommand(this));
-		filterCommand.registerSubCommand(new FilterRemoveSubCommand(this));
-		filterCommand.registerSubCommand(new FilterListSubCommand(this));
-
-		// register listeners
-		new PlayerListeners(this);
-		new ChannelListener(this);
+		// check for PlaceholderAPI
+		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+			new PlaceholderAPIHook(this).register();
+			isPlaceholdersEnabled = true;
+			Logger.log("Placeholders have been registered.");
+		}
 	}
 
 	@Override
 	public void onDisable() {
-		dataSourceProvider.close();
-		// TODO save files / SQL
+		if (userData != null && dataSourceProvider.getSource() != null) {
+			userData.saveUsers();
+			dataSourceProvider.close();
+		}
 	}
 
 	private void loadData() {
@@ -90,6 +99,21 @@ public final class TieredChat extends JavaPlugin {
 		Messages.init(this);
 	}
 
+	private void registerCommands() {
+		ChatBaseCommand chatCommand = new ChatBaseCommand(this);
+		chatCommand.registerSubCommand(new ChatSwapSubCommand(this));
+
+		FilterBaseCommand filterCommand = new FilterBaseCommand(this);
+		filterCommand.registerSubCommand(new FilterAddSubCommand(this));
+		filterCommand.registerSubCommand(new FilterRemoveSubCommand(this));
+		filterCommand.registerSubCommand(new FilterListSubCommand(this));
+	}
+
+	private void registerListeners() {
+		new PlayerListeners(this);
+		new ChannelListener(this);
+	}
+
 	public Settings getSettings() {
 		return settings;
 	}
@@ -98,8 +122,26 @@ public final class TieredChat extends JavaPlugin {
 		return chatManager;
 	}
 
-	private void disablePlugin(String message) {
-		Logger.severe(message);
-		getServer().getPluginManager().disablePlugin(this);
+	public DataSourceProvider getDataSourceProvider() {
+		return dataSourceProvider;
+	}
+
+	public UserData getUserData() {
+		return userData;
+	}
+
+	public boolean isPlaceholdersEnabled() {
+		return isPlaceholdersEnabled;
+	}
+
+	public void timeAction(Action action, String complete) {
+		long time = System.currentTimeMillis();
+		action.run();
+		Logger.log(String.format(complete, System.currentTimeMillis() - time));
+	}
+
+	@FunctionalInterface
+	public interface Action {
+		void run();
 	}
 }

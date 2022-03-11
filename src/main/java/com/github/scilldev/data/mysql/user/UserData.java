@@ -1,11 +1,16 @@
 package com.github.scilldev.data.mysql.user;
 
+import java.util.UUID;
+
 public interface UserData {
 
-	/**
-	 * Initializes
-	 */
-	void init();
+	int loadUsers();
 
+	boolean loadUser(UUID uuid);
 
+	int saveUsers();
+
+	boolean saveUser(UUID uuid);
+
+	boolean exists(UUID uuid);
 }

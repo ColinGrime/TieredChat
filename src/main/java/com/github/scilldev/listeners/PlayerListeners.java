@@ -9,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Set;
 
@@ -32,12 +34,17 @@ public class PlayerListeners implements Listener {
 
 	@EventHandler
 	public void onCommandEvent(PlayerCommandPreprocessEvent event) {
-		String commandName = event.getMessage().substring(1).split(" ")[0];
+		String[] commandMessage = event.getMessage().substring(1).split(" ");
+		String commandName = commandMessage[0];
 		ChatChannel channel = plugin.getChatManager().getChannelByName(commandName);
 
 		if (channel != null && event.getPlayer().hasPermission(channel.getPermission())) {
-			String message = event.getMessage().substring(commandName.length() + 2);
+			if (commandMessage.length == 1) {
+				event.setMessage("/chat " + commandName);
+				return;
+			}
 
+			String message = event.getMessage().substring(commandName.length() + 2);
 			callChannelEvent(channel, event.getPlayer(), message);
 			event.setCancelled(true);
 		}
@@ -49,5 +56,15 @@ public class PlayerListeners implements Listener {
 			ChannelChatEvent channelEvent = new ChannelChatEvent(channel, player, message, recipients);
 			Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(channelEvent));
 		});
+	}
+
+	@EventHandler
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getUserData().saveUser(event.getPlayer().getUniqueId()));
+	}
+
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getUserData().loadUser(event.getPlayer().getUniqueId()));
 	}
 }
