@@ -38,10 +38,15 @@ public class ChannelListener implements Listener {
 		Set<Player> recipients = event.getRecipients();
 		removeIfFiltered(event.getMessage(), recipients);
 
-		// TODO hook into PlaceholderAPI and add your own placeholders
-		String chatFormat = PlaceholderAPI.setPlaceholders(event.getPlayer(), plugin.getSettings().getChatFormat());
+		String chatFormat = plugin.getSettings().getChatFormat();
+		chatFormat = chatFormat.replace("%player%", event.getPlayer().getName());
 		chatFormat = chatFormat.replace("%channel%", event.getChannel().getName());
 		chatFormat = chatFormat.replace("%message%", event.getMessage());
+
+		// setup PlaceholderAPI placeholders if enabled
+		if (plugin.isPlaceholdersEnabled()) {
+			chatFormat = PlaceholderAPI.setPlaceholders(event.getPlayer(), chatFormat);
+		}
 
 		event.getPlayer().sendMessage(chatFormat);
 		for (Player recipient : event.getRecipients()) {
