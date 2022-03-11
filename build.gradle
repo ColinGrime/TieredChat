@@ -42,6 +42,8 @@ shadowJar {
         include dependency('mysql:mysql-connector-java:8.0.28')
         include dependency('com.zaxxer:HikariCP:4.0.3')
     }
+
+    archiveFileName = "${project.name}-${project.version}.jar"
 }
 
 // Allows @version@ placeholder in plugin.yml
