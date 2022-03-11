@@ -5,7 +5,7 @@ version: @version@
 authors: [Scill]
 description: Multi-tiered chat system.
 api-version: 1.18
-depend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI]
 
 commands:
   tieredchat:
