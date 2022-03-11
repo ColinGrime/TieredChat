@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public enum Messages {
@@ -17,6 +18,9 @@ public enum Messages {
 	SUCCESS_FILTER_ADD("success.filter-add", "&a%word% &7has been added to the filter!"),
 	SUCCESS_FILTER_REMOVE("success.filter-remove", "&a%word% &7 has been removed from the filter!"),
 	SUCCESS_FILTER_LIST("success.filter-list", "&7Words: &a%words%"),
+
+	// failure messages
+	FAILURE_ALREADY_ADDED("failure.already-added", "&c%word% is already in your filter."),
 
 	// usage messages
 	USAGE_CHAT_COMMAND("usage.chat-command", "&c/chat [channel]"),
@@ -28,6 +32,7 @@ public enum Messages {
 	// invalid messages
 	INVALID_PERMISSION("invalid.permission", "&cYou do not have permission to perform this command."),
 	INVALID_SENDER("invalid.sender", "&cYou must be a player to perform this command."),
+	INVALID_WORD("invalid.word", "&c%word% is not in your filter."),
 
 	// admin messages
 	RELOADED("admin.reloaded", "&aTieredChat has been reloaded!"),
@@ -50,6 +55,8 @@ public enum Messages {
 	private void update() {
 		if (!config.getStringList(path).isEmpty()) {
 			messages = Utils.color(config.getStringList(path));
+		} else if (config.getString(path) != null) {
+			messages = Collections.singletonList(Utils.color(config.getString(path)));
 		} else {
 			Logger.log("Config path \"" + path + "\" has failed to load (using default value).");
 			messages = Utils.color(messages);

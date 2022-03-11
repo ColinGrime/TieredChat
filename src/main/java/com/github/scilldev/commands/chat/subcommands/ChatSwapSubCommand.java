@@ -4,6 +4,7 @@ import com.github.scilldev.TieredChat;
 import com.github.scilldev.chat.channel.ChatChannel;
 import com.github.scilldev.commands.SubCommand;
 import com.github.scilldev.data.yaml.Messages;
+import com.github.scilldev.utils.Replacer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,10 +25,10 @@ public class ChatSwapSubCommand implements SubCommand {
 
 		if (sender.hasPermission(channel.getPermission())) {
 			plugin.getChatManager().getUser((Player) sender).setChannelPreference(channel);
-			Messages.SUCCESS_CHAT_SWAP.sendTo(sender);
+			Messages.SUCCESS_CHAT_SWAP.sendTo(sender, new Replacer("%channel%", channel.getName()));
+		} else {
+			getUsage().sendTo(sender);
 		}
-
-		getUsage().sendTo(sender);
 	}
 
 	@Override

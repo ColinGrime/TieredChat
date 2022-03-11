@@ -34,9 +34,4 @@ public class FilterListSubCommand implements SubCommand {
 	public Messages getUsage() {
 		return Messages.USAGE_FILTER_LIST;
 	}
-
-	@Override
-	public boolean requireArguments() {
-		return true;
-	}
 }

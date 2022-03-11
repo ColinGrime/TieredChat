@@ -49,11 +49,6 @@ public class ChatManagerAbstraction implements ChatManager {
 	}
 
 	@Override
-	public void loadUsers(Map<UUID, ChatUser> chatUsers) {
-		this.chatUsers = chatUsers;
-	}
-
-	@Override
 	public Map<UUID, ChatUser> getUsers() {
 		return chatUsers;
 	}

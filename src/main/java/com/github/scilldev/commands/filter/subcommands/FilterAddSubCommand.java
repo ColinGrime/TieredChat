@@ -7,6 +7,8 @@ import com.github.scilldev.utils.Replacer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class FilterAddSubCommand implements SubCommand {
 
 	private final TieredChat plugin;
@@ -17,8 +19,16 @@ public class FilterAddSubCommand implements SubCommand {
 
 	@Override
 	public void onCommand(CommandSender sender, String subCommand, String[] args) {
-		plugin.getChatManager().getUser((Player) sender).getFilteredMessages().add(args[0]);
-		Messages.SUCCESS_FILTER_ADD.sendTo(sender, new Replacer("%word%", args[0]));
+		List<String> filter = plugin.getChatManager().getUser((Player) sender).getFilteredMessages();
+		Replacer replacer = new Replacer("%word%", args[0]);
+
+		if (filter.contains(args[0])) {
+			Messages.FAILURE_ALREADY_ADDED.sendTo(sender, replacer);
+			filter.remove(args[0]);
+		} else {
+			filter.add(args[0]);
+			Messages.SUCCESS_FILTER_ADD.sendTo(sender, replacer);
+		}
 	}
 
 	@Override

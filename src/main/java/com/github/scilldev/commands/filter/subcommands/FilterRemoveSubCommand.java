@@ -21,12 +21,13 @@ public class FilterRemoveSubCommand implements SubCommand {
 	@Override
 	public void onCommand(CommandSender sender, String subCommand, String[] args) {
 		List<String> filter = plugin.getChatManager().getUser((Player) sender).getFilteredMessages();
+		Replacer replacer = new Replacer("%word%", args[0]);
 
 		if (filter.contains(args[0])) {
 			filter.remove(args[0]);
-			Messages.SUCCESS_FILTER_REMOVE.sendTo(sender, new Replacer("%word%", args[0]));
+			Messages.SUCCESS_FILTER_REMOVE.sendTo(sender,  replacer);
 		} else {
-			// TODO doesn't exist message
+			Messages.INVALID_WORD.sendTo(sender, replacer);
 		}
 	}
 

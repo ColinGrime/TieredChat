@@ -3,11 +3,12 @@ mysql:
   host: 'localhost'
   port: 3306
   database: 'minecraft'
-  username: 'username'
+  username: 'root'
   password: ''
 
 # Supports any placeholders from PlaceholderAPI
-chat-format: '&d[%channel%] &c%player_name%&7: &f%message%'
+# Default: %channel%, %player%, %message%
+chat-format: '&d[%channel%] &c%player%&7: &f%message%'
 
 # Certain messages have placeholders (%channel%, %word%, %words%)
 messages:
@@ -15,8 +16,11 @@ messages:
   success:
     chat-swap: '&7You have switched your chat to &a%channel%&7!'
     filter-add: '&a%word% &7has been added to the filter!'
-    filter-remove: '&a%word% &7 has been removed from the filter!'
+    filter-remove: '&a%word% &7has been removed from the filter!'
     filter-list: '&7Words: &a%words%'
+  # Failure messages:
+  failure:
+    already-added: '&c%word% is already in your filter.'
   # Usage messages (for commands):
   usage:
     chat-command:
@@ -30,6 +34,7 @@ messages:
   invalid:
     permission: '&cYou do not have permission to perform this command.'
     sender: '&cYou must be a player to perform this command.'
+    word: '&c%word% is not in your filter.'
   # Admin messages:
   admin:
     reloaded: '&aTieredChat has been reloaded!'

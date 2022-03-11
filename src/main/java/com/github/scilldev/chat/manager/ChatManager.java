@@ -18,7 +18,7 @@ public interface ChatManager {
 	void loadChannels(List<ChatChannel> channels);
 
 	/**
-	 * Loads a channel when created todo in some command
+	 * Loads a channel when created TODO in some command
 	 * @param channel newly created channel
 	 */
 	void loadChannel(ChatChannel channel);
@@ -43,12 +43,6 @@ public interface ChatManager {
 	 * @param defaultChannel default channel
 	 */
 	void setDefaultChannel(ChatChannel defaultChannel);
-
-	/**
-	 * TODO Loads the channels when *MySQL database method* is called.
-	 * @param chatUsers newly loaded chat users
-	 */
-	void loadUsers(Map<UUID, ChatUser> chatUsers);
 
 	/**
 	 * @return map of player UUID's and their ChatUser object
