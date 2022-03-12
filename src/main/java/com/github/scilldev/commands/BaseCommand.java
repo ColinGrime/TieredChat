@@ -3,6 +3,7 @@ package com.github.scilldev.commands;
 import com.github.scilldev.TieredChat;
 import com.github.scilldev.data.yaml.Messages;
 import com.github.scilldev.utils.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
@@ -29,7 +30,7 @@ public abstract class BaseCommand implements CommandExecutor, TabExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		// if there's no subcommand input, send the command usage
-		if (args.length == 0 || subCommands.get(args[0]) == null) {
+		if (args.length == 0 || getSubCommand(args[0]) == null) {
 			getUsage().sendTo(sender);
 			return true;
 		}
@@ -77,19 +78,19 @@ public abstract class BaseCommand implements CommandExecutor, TabExecutor {
 	public void registerSubCommand(SubCommand subCommand) {
 		// register subcommand with name
 		if (subCommand.getName() != null) {
-			subCommands.put(subCommand.getName(), subCommand);
+			subCommands.put(subCommand.getName().toLowerCase(), subCommand);
 		}
 
 		// register subcommand with aliases
 		if (subCommand.getAliases() != null) {
 			for (String alias : subCommand.getAliases()) {
-				subCommands.put(alias, subCommand);
+				subCommands.put(alias.toLowerCase(), subCommand);
 			}
 		}
 	}
 
 	public SubCommand getSubCommand(String subCommandString) {
-		return subCommands.get(subCommandString);
+		return subCommands.get(subCommandString.toLowerCase());
 	}
 
 	public abstract Messages getUsage();

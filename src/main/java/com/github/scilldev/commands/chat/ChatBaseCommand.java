@@ -6,6 +6,7 @@ import com.github.scilldev.commands.BaseCommand;
 import com.github.scilldev.data.yaml.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public final class ChatBaseCommand extends BaseCommand {
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		List<String> channels = new ArrayList<>();
 		for (ChatChannel channel : plugin.getChatManager().getChannels()) {
-			if (sender.hasPermission(channel.getPermission())) {
+			if (channel.hasPermission((Player) sender)) {
 				channels.add(channel.getName().toLowerCase());
 			}
 		}

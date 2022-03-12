@@ -27,6 +27,12 @@ public interface ChatChannel {
 	String getPermission();
 
 	/**
+	 * @param player any player
+	 * @return true if the player has permission to speak
+	 */
+	boolean hasPermission(Player player);
+
+	/**
 	 * @return display type of the channel, either GLOBAL or LOCAL
 	 */
 	DisplayType getDisplayType();

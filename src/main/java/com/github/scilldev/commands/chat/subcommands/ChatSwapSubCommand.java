@@ -23,7 +23,7 @@ public class ChatSwapSubCommand implements SubCommand {
 	public void onCommand(CommandSender sender, String subCommand, String[] args) {
 		ChatChannel channel = plugin.getChatManager().getChannelByName(subCommand);
 
-		if (sender.hasPermission(channel.getPermission())) {
+		if (channel.hasPermission((Player) sender)) {
 			plugin.getChatManager().getUser((Player) sender).setChannelPreference(channel);
 			Messages.SUCCESS_CHAT_SWAP.sendTo(sender, new Replacer("%channel%", channel.getName()));
 		} else {
@@ -39,11 +39,6 @@ public class ChatSwapSubCommand implements SubCommand {
 	@Override
 	public Messages getUsage() {
 		return Messages.USAGE_CHAT_COMMAND;
-	}
-
-	@Override
-	public String getPermission() {
-		return "tieredchat.swap";
 	}
 
 	@Override

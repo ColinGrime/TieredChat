@@ -51,6 +51,11 @@ public class ChatChannelAbstraction implements ChatChannel {
 	}
 
 	@Override
+	public boolean hasPermission(Player player) {
+		return permission.isEmpty() || player.hasPermission(permission);
+	}
+
+	@Override
 	public DisplayType getDisplayType() {
 		return displayType;
 	}
