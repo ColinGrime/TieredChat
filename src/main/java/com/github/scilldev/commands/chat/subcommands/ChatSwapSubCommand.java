@@ -25,7 +25,7 @@ public class ChatSwapSubCommand implements SubCommand {
 
 		if (channel.hasPermission((Player) sender)) {
 			plugin.getChatManager().getUser((Player) sender).setChannelPreference(channel);
-			Messages.SUCCESS_CHAT_SWAP.sendTo(sender, new Replacer("%channel%", channel.getName()));
+			Messages.SUCCESS_CHAT_SWAP.sendTo(sender, new Replacer("%channel%", channel.getName().toLowerCase()));
 		} else {
 			getUsage().sendTo(sender);
 		}
