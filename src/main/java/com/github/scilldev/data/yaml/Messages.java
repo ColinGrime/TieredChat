@@ -23,11 +23,11 @@ public enum Messages {
 	FAILURE_ALREADY_ADDED("failure.already-added", "&c%word% is already in your filter."),
 
 	// usage messages
-	USAGE_CHAT_COMMAND("usage.chat-command", "&c/chat [channel]"),
-	USAGE_FILTER_COMMAND("usage.filter-command", "&c/filter"),
-	USAGE_FILTER_ADD("usage.filter-add", "&c/filter add [word]"),
-	USAGE_FILTER_REMOVE("usage.filter-remove", "&c/filter remove [word]"),
-	USAGE_FILTER_LIST("usage.filter-list", "&c/filter list"),
+	USAGE_CHAT_COMMAND("usage.chat-command", "&7Chat commands:", "&a/chat [channel] &7- switches the channel", "&a/filter &7- block messages from showing up"),
+	USAGE_FILTER_COMMAND("usage.filter-command", "&7Filter commands:", "&a/filter add [word] &7- add a word to your filter", "&a/filter remove [word] &7- remove a word from your filter", "&a/filter list &7- display the words in your filter"),
+	USAGE_FILTER_ADD("usage.filter-add", "&7Usage: &a/filter add [word]"),
+	USAGE_FILTER_REMOVE("usage.filter-remove", "&7Usage: &a/filter remove [word]"),
+	USAGE_FILTER_LIST("usage.filter-list", "&7Usage: &a/filter list"),
 
 	// invalid messages
 	INVALID_PERMISSION("invalid.permission", "&cYou do not have permission to perform this command."),

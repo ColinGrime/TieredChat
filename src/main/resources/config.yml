@@ -24,12 +24,17 @@ messages:
   # Usage messages (for commands):
   usage:
     chat-command:
-      - 'Chat commands:'
-      - '/chat [channel] - switches the channel'
-    filter-command: '&c/filter'
-    filter-add: '&c/filter add [word]'
-    filter-remove: '&c/filter remove [word]'
-    filter-list: '&c/filter list'
+      - '&7Chat commands:'
+      - '&a/chat [channel] &7- switches the channel'
+      - '&a/filter &7- block messages from showing up'
+    filter-command:
+      - '&7Filter commands:'
+      - '&a/filter add [word] &7- add a word to your filter'
+      - '&a/filter remove [word] &7- remove a word from your filter'
+      - '&a/filter list &7- display the words in your filter'
+    filter-add: '&7Usage: &a/filter add [word]'
+    filter-remove: '&7Usage: &a/filter remove [word]'
+    filter-list: '&7Usage: &a/filter list'
   # Error messages:
   invalid:
     permission: '&cYou do not have permission to perform this command.'
