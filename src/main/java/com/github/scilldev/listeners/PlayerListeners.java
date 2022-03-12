@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -25,37 +24,20 @@ public class PlayerListeners implements Listener {
 
 	@EventHandler
 	public void onPlayerChatEvent(AsyncPlayerChatEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
 		Player player = event.getPlayer();
 		ChatChannel channel = plugin.getChatManager().getUser(player).getChannelPreference();
 
-		callChannelEvent(channel, player, event.getMessage());
-		event.setCancelled(true);
-	}
-
-	@EventHandler
-	public void onCommandEvent(PlayerCommandPreprocessEvent event) {
-		String[] commandMessage = event.getMessage().substring(1).split(" ");
-		String commandName = commandMessage[0];
-		ChatChannel channel = plugin.getChatManager().getChannelByName(commandName);
-
-		if (channel != null && event.getPlayer().hasPermission(channel.getPermission())) {
-			if (commandMessage.length == 1) {
-				event.setMessage("/chat " + commandName);
-				return;
-			}
-
-			String message = event.getMessage().substring(commandName.length() + 2);
-			callChannelEvent(channel, event.getPlayer(), message);
-			event.setCancelled(true);
-		}
-	}
-
-	private void callChannelEvent(ChatChannel channel, Player player, String message) {
 		Bukkit.getScheduler().runTask(plugin, () -> {
 			Set<Player> recipients = channel.getAllowedListeners(player);
-			ChannelChatEvent channelEvent = new ChannelChatEvent(channel, player, message, recipients);
-			Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(channelEvent));
+			ChannelChatEvent channelEvent = new ChannelChatEvent(channel, player, event.getMessage(), recipients);
+			Bukkit.getServer().getPluginManager().callEvent(channelEvent);
 		});
+
+		event.setCancelled(true);
 	}
 
 	@EventHandler
