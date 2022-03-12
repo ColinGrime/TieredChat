@@ -11,9 +11,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ChannelData implements DataFile {
 
@@ -56,12 +56,12 @@ public class ChannelData implements DataFile {
 		for (String channelName : channelSec.getKeys(false)) {
 			// options: commands, permission, display-type, block-radius
 			List<String> commands = channelSec.getStringList(channelName + ".commands");
-			String permission = channelSec.getString(channelName + ".permission");
-			DisplayType display = DisplayType.getByName(channelSec.getString(channelName + ".display-type"));
+			String permission = Optional.ofNullable(channelSec.getString(channelName + ".permission")).orElse("");
+			DisplayType display = Optional.ofNullable(DisplayType.getByName(channelSec.getString(channelName + ".display-type"))).orElse(DisplayType.GLOBAL);
 			int blockRadius = channelSec.getInt(channelName + ".block-radius");
 
 			// creates and adds the channel
-			ChatChannel channel = new ChatChannelAbstraction(plugin, channelName, commands, permission, display, blockRadius);
+			ChatChannel channel = new ChatChannelAbstraction(channelName, commands, permission, display, blockRadius);
 			channels.add(channel);
 
 			// set it as default if configured to it
@@ -71,13 +71,5 @@ public class ChannelData implements DataFile {
 		}
 
 		return channels;
-	}
-
-	public void save() {
-		try {
-			config.save(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }
