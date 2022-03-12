@@ -2,8 +2,12 @@ package com.github.scilldev.chat.manager;
 
 import com.github.scilldev.chat.ChatUser;
 import com.github.scilldev.chat.channel.ChatChannel;
+import com.github.scilldev.commands.chat.ChannelCommand;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class ChatManagerAbstraction implements ChatManager {
@@ -15,6 +19,24 @@ public class ChatManagerAbstraction implements ChatManager {
 	@Override
 	public void loadChannels(List<ChatChannel> channels) {
 		this.channels = channels;
+
+		try {
+			registerCommands();
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void registerCommands() throws NoSuchFieldException, IllegalAccessException {
+		Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+		bukkitCommandMap.setAccessible(true);
+
+		CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+		for (ChatChannel channel : channels) {
+			for (String command : channel.getCommands()) {
+				commandMap.register(command, new ChannelCommand(command, channel));
+			}
+		}
 	}
 
 	@Override
