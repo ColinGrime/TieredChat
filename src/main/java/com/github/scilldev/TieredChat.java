@@ -3,6 +3,7 @@ package com.github.scilldev;
 import com.github.scilldev.chat.manager.ChatManager;
 import com.github.scilldev.chat.manager.ChatManagerAbstraction;
 import com.github.scilldev.commands.chat.ChatBaseCommand;
+import com.github.scilldev.commands.chat.subcommands.ChatReloadSubCommand;
 import com.github.scilldev.commands.chat.subcommands.ChatSwapSubCommand;
 import com.github.scilldev.commands.filter.FilterBaseCommand;
 import com.github.scilldev.commands.filter.subcommands.FilterAddSubCommand;
@@ -102,6 +103,7 @@ public final class TieredChat extends JavaPlugin {
 	private void registerCommands() {
 		ChatBaseCommand chatCommand = new ChatBaseCommand(this);
 		chatCommand.registerSubCommand(new ChatSwapSubCommand(this));
+		chatCommand.registerSubCommand(new ChatReloadSubCommand(this));
 
 		FilterBaseCommand filterCommand = new FilterBaseCommand(this);
 		filterCommand.registerSubCommand(new FilterAddSubCommand(this));
